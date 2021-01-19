@@ -1,0 +1,41 @@
+# Default values for io2-portal.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+nameOverride: io2-portal
+fullnameOverride: io2-portal
+
+common:
+  restartPolicy: Always
+  nodeSelector:
+    kops.k8s.io/instancegroup: nodes
+  image:
+    pullSecrets: []
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 5000
+    servicePortName: http
+  ingress:
+    annotations: {}
+    hosts:
+      - chart-example.local
+    tls: []
+
+cavaMedia:
+  enabled: true
+  name: cava-media
+  path: /media
+  service:
+    targetPort: 8080
+    portName: http
+  image:
+    repository: cormorack/cava-media
+    tag: latest
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 100m
+    limits:
+      memory: 2Gi
+      cpu: "1"

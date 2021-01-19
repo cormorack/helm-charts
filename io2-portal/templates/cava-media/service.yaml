@@ -1,0 +1,23 @@
+{{- if .Values.cavaMedia.enabled -}}
+{{- $serviceName := .Values.cavaMedia.name -}}
+{{- $servicePath := .Values.cavaMedia.path -}}
+{{- $servicePortName := .Values.cavaMedia.service.portName -}}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}
+  name: {{ include "io2-portal.name" . }}-{{ $serviceName }}
+spec:
+  type: {{ .Values.common.service.type }}
+  ports:
+    - name: {{ $servicePortName }}
+      port: {{ .Values.common.service.port }}
+      targetPort: {{ .Values.cavaMedia.service.targetPort }}
+  selector:
+    {{- include "io2-portal.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}
+status:
+  loadBalancer: {}
+{{- end -}}
