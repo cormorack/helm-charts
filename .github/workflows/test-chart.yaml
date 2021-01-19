@@ -34,6 +34,13 @@ jobs:
       - name: Install helm
         run: |
           curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | bash
+      - name: Unlock git-crypt Secrets
+        uses: docker://yuvipanda/hubploy:20200826083951674280
+        env:
+          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+        with:
+          entrypoint: /bin/bash
+          args: -c "echo ${GIT_CRYPT_KEY} | base64 -d | git crypt unlock - && git crypt status"
 
       - name: Lint chart's templates
         run: |
