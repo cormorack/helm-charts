@@ -16,11 +16,6 @@ common:
     port: 80
     targetPort: 5000
     servicePortName: http
-  ingress:
-    annotations: {}
-    hosts:
-      - chart-example.local
-    tls: []
 
 cavaMedia:
   enabled: true
@@ -39,3 +34,24 @@ cavaMedia:
     limits:
       memory: 2Gi
       cpu: "1"
+  env:
+  - name: WPUSER
+    value: ""
+  - name: WPPASSWORD
+    value: ""
+  - name: USERNAME
+    value: ""
+  - name: PASSWORD
+    value: ""
+  - name: HOST
+    value: ""
+  - name: PORT
+    value: ""
+  - name: DBNAME
+    value: ""
+  - name: MAXFILESIZE
+    value: ""
+  - name: SERVER_URL
+    value: ""
+  - name: ISSUES
+    value: ""
