@@ -1,1 +1,1 @@
-.ci-helpers/secrets/** filter=git-crypt-ooi diff=git-crypt-ooi
+.ci-helpers/deployments/secrets/** filter=git-crypt-ooi diff=git-crypt-ooi
