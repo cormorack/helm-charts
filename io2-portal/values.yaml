@@ -51,6 +51,8 @@ cavaMedia:
     value: ""
   - name: MAXFILESIZE
     value: ""
+  - name: JVM_OPTS
+    value: ""
   - name: SERVER_URL
     value: ""
   - name: ISSUES
