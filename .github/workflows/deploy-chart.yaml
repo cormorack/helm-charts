@@ -1,0 +1,49 @@
+name: Portal Chart Deployment
+
+on:
+  release:
+    types: [created]
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install helm
+        run: |
+          curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | bash
+      - name: Install git-crypt
+        run: sudo apt-get install git-crypt
+      - name: Install Chartpress
+        run: pip install chartpress
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2
+      - name: Setup credentials
+        run: |
+          aws s3 cp ${{ secrets.GIT_CRYPT_KEY }} ./crypt.key
+          aws s3 cp ${{ secrets.HELM_DEPLOY_KEY }} ${PWD}/deploy_key
+          chmod 400 ${PWD}/deploy_key
+          GIT_SSH_COMMAND="ssh -i ${PWD}/deploy_key"
+          echo "GIT_SSH_COMMAND=${GIT_SSH_COMMAND}" >> $GITHUB_ENV
+      - name: Unlock git-crypt Secrets
+        run: git-crypt unlock ./crypt.key && git-crypt status
+      - name: Lint chart's templates
+        run: |
+          helm lint ./io2-portal --strict --values .ci-helpers/deployments/secrets/dev-test.yaml
+
+      - name: Validate chart's templates can render
+        run: |
+          helm template ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
+      - name: Publish chart
+        run: |
+          chartpress --publish-chart
+      
