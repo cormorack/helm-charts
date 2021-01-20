@@ -2,7 +2,7 @@
 title: Interactive Oceans Helm charts for Kubernetes
 description: This site stores Helm chart tarballs for Interactive Oceans Portal.
 theme: minima
-url: "https://interactiveoceans.washington.edu/"
+url: "https://cormorack.github.io/helm-charts/"
 repo_name: helm-charts
 
 exclude:
