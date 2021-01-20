@@ -22,7 +22,7 @@ $ helm repo update
 
 <h3>
   {% if latest_chart.icon %}
-  <img src="{{ latest_chart.icon }}" style="height:1.2em;vertical-align: text-top;" />
+  <img src="{{ latest_chart.icon }}" style="height:1.2em;vertical-align: text-top; background: 000000;" />
   {% endif %}
   {{ title }}
 </h3>
