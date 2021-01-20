@@ -6,8 +6,7 @@ fullnameOverride: io2-portal
 
 common:
   restartPolicy: Always
-  nodeSelector:
-    kops.k8s.io/instancegroup: nodes
+  nodeSelector: {}
   image:
     pullSecrets: []
     pullPolicy: Always
