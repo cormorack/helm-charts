@@ -34,21 +34,28 @@ jobs:
       - name: Install helm
         run: |
           curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | bash
-      - name: Unlock git-crypt Secrets
-        uses: docker://yuvipanda/hubploy:20200826083951674280
-        env:
-          GIT_CRYPT_KEY: ${{ secrets.GIT_CRYPT_KEY }}
+      - name: Install git-crypt
+        run: sudo apt-get install git-crypt
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
         with:
-          entrypoint: /bin/bash
-          args: -c "echo ${GIT_CRYPT_KEY} | base64 -d | git-crypt unlock - && git-crypt status"
-
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2
+      - name: Copy files to the test website with the AWS CLI
+        run: |
+          aws s3 cp ${{ secrets.GIT_CRYPT_KEY }} ./crypt.key
+      - name: Unlock git-crypt Secrets
+        run: git-crypt unlock ./crypt.key && git-crypt status
+      - name: Apply secrets
+        run: kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml
       - name: Lint chart's templates
         run: |
-          helm lint ./io2-portal --strict --values io2-portal/dev-values.yaml
+          helm lint ./io2-portal --strict --values .ci-helpers/deployments/secrets/dev-test.yaml
 
       - name: Validate chart's templates can render
         run: |
-          helm template ./io2-portal --values io2-portal/dev-values.yaml 1>/dev/null
+          helm template ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
 
       # Starts a k8s cluster with NetworkPolicy enforcement and installs kubectl
       #
@@ -62,11 +69,11 @@ jobs:
 
       - name: Validate charts' rendered templates are valid k8s resources
         run: |
-          helm template ./io2-portal --validate --values io2-portal/dev-values.yaml 1>/dev/null
+          helm template ./io2-portal --validate --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
 
       - name: Install chart and await readiness
         run: |
-          helm install io2-portal ./io2-portal --values io2-portal/dev-values.yaml
+          helm install io2-portal ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml
 
           . .ci-helpers/common
           full_namespace_await
