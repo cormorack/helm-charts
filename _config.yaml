@@ -1,0 +1,11 @@
+
+title: Interactive Oceans Helm charts for Kubernetes
+description: This site stores Helm chart tarballs for Interactive Oceans Portal.
+theme: minima
+url: "https://interactiveoceans.washington.edu/"
+repo_name: helm-charts
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - .gitignore
