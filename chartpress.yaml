@@ -1,0 +1,5 @@
+charts:
+  - name: io2-portal
+    repo:
+      git: cormorack/helm-charts
+      published: https://cormorack.github.io/helm-charts/
