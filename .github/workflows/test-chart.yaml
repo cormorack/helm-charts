@@ -26,8 +26,7 @@ jobs:
         # k3s-version: https://github.com/rancher/k3s/tags
         # k3s-channel: https://update.k3s.io/v1-release/channels
         include:
-          - k3s-channel: v1.19
-          - k3s-channel: v1.16
+          - k3s-channel: v1.18
 
     steps:
       - uses: actions/checkout@v2
@@ -47,8 +46,6 @@ jobs:
           aws s3 cp ${{ secrets.GIT_CRYPT_KEY }} ./crypt.key
       - name: Unlock git-crypt Secrets
         run: git-crypt unlock ./crypt.key && git-crypt status
-      - name: Apply secrets
-        run: kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml
       - name: Lint chart's templates
         run: |
           helm lint ./io2-portal --strict --values .ci-helpers/deployments/secrets/dev-test.yaml
@@ -56,7 +53,6 @@ jobs:
       - name: Validate chart's templates can render
         run: |
           helm template ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
-
       # Starts a k8s cluster with NetworkPolicy enforcement and installs kubectl
       #
       # ref: https://github.com/manics/action-k3s-helm/
@@ -66,7 +62,8 @@ jobs:
           metrics-enabled: false
           traefik-enabled: false
           docker-enabled: false
-
+      - name: Apply secrets
+        run: kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml
       - name: Validate charts' rendered templates are valid k8s resources
         run: |
           helm template ./io2-portal --validate --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
