@@ -1,4 +1,4 @@
-name: Test Harvester Chart
+name: Test Portal Chart
 
 on:
   push:
