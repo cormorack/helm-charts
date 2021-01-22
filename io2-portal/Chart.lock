@@ -2,5 +2,8 @@ dependencies:
 - name: traefik
   repository: https://helm.traefik.io/traefik
   version: 9.12.3
-digest: sha256:fe399865be09a2e47218deb48c273c7d41aebeb0d83a5b57893d144d931cdf64
-generated: "2021-01-19T11:55:01.481822137-08:00"
+- name: cava-media
+  repository: https://cormorack.github.io/cava-media
+  version: 0.1.1
+digest: sha256:27641792fe8771eaf8deedac9799d14541afdd33b1a0e5e7834bf6f4ecf67e26
+generated: "2021-01-22T15:33:27.148564412-08:00"
