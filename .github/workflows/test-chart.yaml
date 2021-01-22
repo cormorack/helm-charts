@@ -46,6 +46,9 @@ jobs:
           aws s3 cp ${{ secrets.GIT_CRYPT_KEY }} ./crypt.key
       - name: Unlock git-crypt Secrets
         run: git-crypt unlock ./crypt.key && git-crypt status
+      - name: Update chart dependencies
+        run: |
+          helm dependencies update ./io2-portal
       - name: Lint chart's templates
         run: |
           helm lint ./io2-portal --strict --values .ci-helpers/deployments/secrets/dev-test.yaml
