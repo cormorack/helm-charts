@@ -24,5 +24,6 @@ dependencies:
   - name: traefik
     version: "9.12.3"
     repository: "https://helm.traefik.io/traefik"
+    condition: traefik.enabled
 
 icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm-150x150.png
