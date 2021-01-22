@@ -50,3 +50,6 @@ cavaMedia:
     value: ""
   - name: ISSUES
     value: ""
+
+traefik:
+  enabled: false
