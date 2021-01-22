@@ -4,52 +4,8 @@
 nameOverride: io2-portal
 fullnameOverride: io2-portal
 
-common:
-  restartPolicy: Always
-  nodeSelector: {}
-  image:
-    pullSecrets: []
-    pullPolicy: Always
-  service:
-    type: ClusterIP
-    port: 80
-    targetPort: 5000
-    servicePortName: http
-
-cavaMedia:
+cava-media:
   enabled: true
-  name: cava-media
-  path: /media
-  service:
-    targetPort: 8080
-    portName: http
-  image:
-    repository: cormorack/cava-media
-    tag: latest
-  resources: {}
-  env:
-  - name: WPUSER
-    value: ""
-  - name: WPPASSWORD
-    value: ""
-  - name: USERNAME
-    value: ""
-  - name: PASSWORD
-    value: ""
-  - name: HOST
-    value: ""
-  - name: PORT
-    value: ""
-  - name: DBNAME
-    value: ""
-  - name: MAXFILESIZE
-    value: ""
-  - name: JVM_OPTS
-    value: ""
-  - name: SERVER_URL
-    value: ""
-  - name: ISSUES
-    value: ""
 
 traefik:
   enabled: false
