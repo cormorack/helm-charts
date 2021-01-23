@@ -67,10 +67,9 @@ jobs:
           docker-enabled: false
       - name: Apply secrets
         run: kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml
-      - name: Validate charts' rendered templates are valid k8s resources
-        run: |
-          helm template ./io2-portal --validate --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
-
+      # - name: Validate charts' rendered templates are valid k8s resources
+      #   run: |
+      #     helm template ./io2-portal --validate --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
       - name: Install chart and await readiness
         run: |
           helm install io2-portal ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml
