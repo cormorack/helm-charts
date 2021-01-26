@@ -9,6 +9,7 @@ This repository contains the Interactive Oceans Services helm chart.
 1. Spin up k3s cluster
 
     ``` bash
+    # Note: https://github.com/rancher/k3d/issues/104#issuecomment-542184960
     k3d create --server-arg --no-deploy --server-arg traefik
     ```
 
