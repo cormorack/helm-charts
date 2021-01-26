@@ -6,7 +6,7 @@ This repository contains the Interactive Oceans Services helm chart.
 
 ## Local Testing
 
-1. Spin up k3s cluster
+1. Spin up [k3s](https://k3s.io/) cluster via [k3d](https://k3d.io/). K3s is a lightweight kubernetes by [rancher](https://rancher.com/).
 
     ``` bash
     # Note: https://github.com/rancher/k3d/issues/104#issuecomment-542184960
