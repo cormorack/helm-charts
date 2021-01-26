@@ -6,7 +6,7 @@ This repository contains the Interactive Oceans Services helm chart.
 
 ## Local Testing
 
-0. Install docker and k3d if it doesn't exists in system yet
+0. Install docker, k3d, kubectl, helm, and stern if it doesn't exists in system yet
 
     ```bash
     # Installs docker in (Ubuntu)
@@ -18,6 +18,19 @@ This repository contains the Interactive Oceans Services helm chart.
 
     # Installs k3d in Linux
     curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
+
+    # Install kubectl
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    chmod +x ./kubectl
+    sudo mv ./kubectl /usr/local/bin/
+
+    # Install helm
+    curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+
+    # Install stern
+    wget -O stern https://github.com/wercker/stern/releases/download/$(curl -s https://api.github.com/repos/wercker/stern/releases/latest | grep tag_name | cut -d '"' -f 4)/stern_linux_amd64
+    chmod +x ./stern
+    sudo mv ./stern /usr/local/bin/
     ```
 
 1. Spin up [k3s](https://k3s.io/) cluster via [k3d](https://k3d.io/). K3s is a lightweight kubernetes by [rancher](https://rancher.com/).
