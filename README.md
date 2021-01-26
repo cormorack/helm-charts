@@ -6,6 +6,20 @@ This repository contains the Interactive Oceans Services helm chart.
 
 ## Local Testing
 
+0. Install docker and k3d if it doesn't exists in system yet
+
+    ```bash
+    # Installs docker in (Ubuntu)
+    # Source: https://rancher.com/docs/rancher/v2.x/en/installation/requirements/installing-docker/
+    curl https://releases.rancher.com/install-docker/19.03.sh | sh
+
+    # Allow docker to run as non-root user
+    sudo usermod -aG docker ubuntu
+
+    # Installs k3d in Linux
+    curl -s https://raw.githubusercontent.com/rancher/k3d/main/install.sh | bash
+    ```
+
 1. Spin up [k3s](https://k3s.io/) cluster via [k3d](https://k3d.io/). K3s is a lightweight kubernetes by [rancher](https://rancher.com/).
 
     ``` bash
