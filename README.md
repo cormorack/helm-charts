@@ -43,3 +43,16 @@ This repository contains the Interactive Oceans Services helm chart.
     ```bash
     helm upgrade -f .ci-helpers/deployments/secrets/dev-test.yaml io2-portal ./io2-portal
     ```
+
+7. Clean up with the following commands
+
+    ```bash
+    helm delete io2-portal
+    kubectl delete secrets cava-secrets
+    ```
+
+8. Tear down k3s cluster
+
+    ```bash
+    k3d delete
+    ```
