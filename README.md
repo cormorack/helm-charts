@@ -37,13 +37,13 @@ This repository contains the Interactive Oceans Services helm chart.
 
     ``` bash
     # Note: https://github.com/rancher/k3d/issues/104#issuecomment-542184960
-    k3d create --server-arg --no-deploy --server-arg traefik
+    k3d cluster create --k3s-server-arg --no-deploy --k3s-server-arg traefik
     ```
 
 2. Connect to cluster and check
 
     ```bash
-    export KUBECONFIG="$(k3d get-kubeconfig --name='k3s-default')"
+    kubectl config use-context k3d-k3s-default
     kubectl cluster-info
     ```
 
@@ -81,5 +81,5 @@ This repository contains the Interactive Oceans Services helm chart.
 8. Tear down k3s cluster
 
     ```bash
-    k3d delete
+    k3d cluster delete
     ```
