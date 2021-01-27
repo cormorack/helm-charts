@@ -34,4 +34,4 @@ dependencies:
     repository: "https://cormorack.github.io/cava-metadata"
     condition: cava-metadata.enabled
 
-icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm-150x150.png
+icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm.png
