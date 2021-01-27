@@ -1,4 +1,4 @@
-name: Watch dependencies
+name: Watch Production Dependencies
 
 on:
   schedule:
@@ -52,7 +52,7 @@ jobs:
           title: Upgrade cava-media chart to ${{ steps.remote_chart.outputs.tag }}
           reviewers: lsetiawan
           labels: chart/cava-media
-          branch: upgrade-cava-media-version
-          base: main
+          branch: upgrade-cava-media-dev
+          base: production
           body: |
             This PR upgrades the `io2-portal` chart to depend on cava-media version `${{ steps.remote_chart.outputs.tag }}`.
