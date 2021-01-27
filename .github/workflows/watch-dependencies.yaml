@@ -1,0 +1,57 @@
+name: Watch dependencies
+
+on:
+  schedule:
+    # Run every hour sharp, ref: https://crontab.guru/#0_*_*_*_*
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  check-cava-media-chart:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+
+      # ref: https://github.com/oprypin/find-latest-tag
+      - name: Find latest tag of dependency
+        id: remote_chart
+        uses: oprypin/find-latest-tag@v1
+        with:
+          repository: cormorack/cava-media
+          releases-only: false
+
+      # ref: https://github.com/jacobtomlinson/gha-read-helm-chart
+      - name: Find current tag of dependency
+        id: local_chart
+        uses: jacobtomlinson/gha-read-helm-chart@0.1.3
+        with:
+          path: io2-portal
+
+      # ref: https://github.com/jacobtomlinson/gha-find-replace
+      - name: Replace current with latest in Chart.yaml
+        uses: jacobtomlinson/gha-find-replace@0.1.2
+        with:
+          include: "io2-portal/Chart.yaml"
+          find: "${{ steps.local_chart.outputs.dependencies_cava-media_version }}"
+          replace: "${{ steps.remote_chart.outputs.tag }}"
+
+      # ref: https://github.com/jacobtomlinson/gha-find-replace
+      - name: Git diff changes
+        run: |
+          git --no-pager diff --color=always
+      # ref: https://github.com/peter-evans/create-pull-request
+      - name: Create a PR
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: "${{ secrets.GITHUB_TOKEN }}"
+          commit-message: Upgrade jupyterhub chart to ${{ steps.remote_chart.outputs.tag }}
+          title: Upgrade jupyterhub chart to ${{ steps.remote_chart.outputs.tag }}
+          reviewers: lsetiawan
+          labels: chart/cava-media
+          branch: upgrade-cava-media-version
+          body: |
+            This PR upgrades the `io2-portal` chart to depend on cava-media version `${{ steps.remote_chart.outputs.tag }}`.
