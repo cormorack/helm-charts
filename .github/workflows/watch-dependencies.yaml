@@ -48,10 +48,11 @@ jobs:
         uses: peter-evans/create-pull-request@v3
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
-          commit-message: Upgrade jupyterhub chart to ${{ steps.remote_chart.outputs.tag }}
-          title: Upgrade jupyterhub chart to ${{ steps.remote_chart.outputs.tag }}
+          commit-message: Upgrade cava-media chart to ${{ steps.remote_chart.outputs.tag }}
+          title: Upgrade cava-media chart to ${{ steps.remote_chart.outputs.tag }}
           reviewers: lsetiawan
           labels: chart/cava-media
           branch: upgrade-cava-media-version
+          base: main
           body: |
             This PR upgrades the `io2-portal` chart to depend on cava-media version `${{ steps.remote_chart.outputs.tag }}`.
