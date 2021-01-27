@@ -53,6 +53,7 @@ jobs:
           reviewers: lsetiawan
           labels: chart/cava-media
           branch: upgrade-cava-media-prod
+          delete-branch: true
           base: production
           body: |
             This PR upgrades the `io2-portal` chart to depend on cava-media version `${{ steps.remote_chart.outputs.tag }}`.
@@ -99,6 +100,7 @@ jobs:
           reviewers: lsetiawan
           labels: chart/cava-media
           branch: upgrade-cava-media-dev
+          delete-branch: true
           base: development
           body: |
             This PR upgrades the `io2-portal` chart to depend on cava-media version `${{ steps.remote_chart.outputs.tag }}`.
