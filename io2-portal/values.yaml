@@ -4,6 +4,9 @@
 nameOverride: io2-portal
 fullnameOverride: io2-portal
 
+cava-metadata:
+  enabled: true
+
 cava-media:
   enabled: true
 
