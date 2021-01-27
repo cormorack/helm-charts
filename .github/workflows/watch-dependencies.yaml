@@ -22,7 +22,7 @@ jobs:
         uses: oprypin/find-latest-tag@v1
         with:
           repository: cormorack/cava-media
-          releases-only: false
+          releases-only: true
 
       # ref: https://github.com/jacobtomlinson/gha-read-helm-chart
       - name: Find current tag of dependency
