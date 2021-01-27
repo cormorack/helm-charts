@@ -14,7 +14,7 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 0.1.0
+version: 0.1.1-rc.1
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
@@ -26,12 +26,12 @@ dependencies:
     repository: "https://helm.traefik.io/traefik"
     condition: traefik.enabled
   - name: cava-media
-    version: "0.1.0"
+    version: "0.1.1-rc.1"
     repository: "https://cormorack.github.io/cava-media"
     condition: cava-media.enabled
   - name: cava-metadata
-    version: "0.1.0"
+    version: "0.1.1-rc.1"
     repository: "https://cormorack.github.io/cava-metadata"
     condition: cava-metadata.enabled
 
-icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm-150x150.png
+icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm-150.1.1-rc.1.png
