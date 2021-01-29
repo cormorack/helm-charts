@@ -33,6 +33,7 @@ jobs:
 
       # ref: https://github.com/jacobtomlinson/gha-find-replace
       - name: Replace current with latest in Chart.yaml
+        if: ${{ !contains(steps.remote_chart.outputs.tag, 'rc') }}
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
