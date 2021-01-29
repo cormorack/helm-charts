@@ -43,12 +43,12 @@ jobs:
 
       # ref: https://github.com/jacobtomlinson/gha-find-replace
       - name: Git diff changes
-        if: ${{ success() }}
+        if: ${{ !cancelled() }}
         run: |
           git --no-pager diff --color=always
       # ref: https://github.com/peter-evans/create-pull-request
       - name: Create a PR
-        if: ${{ success() }}
+        if: ${{ !cancelled() }}
         uses: peter-evans/create-pull-request@v3
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
