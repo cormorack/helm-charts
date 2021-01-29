@@ -27,6 +27,7 @@ jobs:
 
       # ref: https://github.com/jacobtomlinson/gha-read-helm-chart
       - name: Find current tag of dependency
+        if: ${{ !contains(steps.remote_chart.outputs.tag, 'rc') }}
         id: local_chart
         uses: jacobtomlinson/gha-read-helm-chart@0.1.3
         with:
@@ -43,12 +44,12 @@ jobs:
 
       # ref: https://github.com/jacobtomlinson/gha-find-replace
       - name: Git diff changes
-        if: ${{ !cancelled() }}
+        if: ${{ !contains(steps.remote_chart.outputs.tag, 'rc') }}
         run: |
           git --no-pager diff --color=always
       # ref: https://github.com/peter-evans/create-pull-request
       - name: Create a PR
-        if: ${{ !cancelled() }}
+        if: ${{ !contains(steps.remote_chart.outputs.tag, 'rc') }}
         uses: peter-evans/create-pull-request@v3
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
