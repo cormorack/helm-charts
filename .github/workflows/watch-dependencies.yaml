@@ -13,6 +13,7 @@ defaults:
 jobs:
   check-cava-media-production-chart:
     runs-on: ubuntu-20.04
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v2
 
@@ -42,10 +43,12 @@ jobs:
 
       # ref: https://github.com/jacobtomlinson/gha-find-replace
       - name: Git diff changes
+        if: ${{ success() }}
         run: |
           git --no-pager diff --color=always
       # ref: https://github.com/peter-evans/create-pull-request
       - name: Create a PR
+        if: ${{ success() }}
         uses: peter-evans/create-pull-request@v3
         with:
           token: "${{ secrets.GITHUB_TOKEN }}"
@@ -61,6 +64,7 @@ jobs:
   
   check-cava-media-dev-chart:
     runs-on: ubuntu-20.04
+    if: ${{ github.ref == 'refs/heads/main' }}
     steps:
       - uses: actions/checkout@v2
 
