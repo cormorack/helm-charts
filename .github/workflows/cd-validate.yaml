@@ -1,13 +1,8 @@
 name: Cloud deployment validation
 
 on:
-  push:
-    paths: ["deployments/**", "io2-portal/**", "**/cd-validate.yaml"]
-    branches:
-      - development
-      - production
   pull_request:
-    paths: ["deployments/**", "io2-portal/**", "**/cd-validate.yaml"]
+    paths: ["deployments/**", "io2-portal/**"]
     branches:
       - development
       - production
@@ -21,7 +16,6 @@ jobs:
   validate-values:
     runs-on: ubuntu-20.04
     name: ${{ matrix.namespace }}-validate
-    if: "github.base_ref == matrix.namespace"
     strategy:
       # Keep running even if one variation of the job fail
       fail-fast: false
@@ -43,3 +37,11 @@ jobs:
           echo ${{ github.base_ref }}
           echo ${{ matrix.namespace }}
           echo ${{ matrix.k3s-channel }}
+      - name: Cancel Previous Runs
+        if: ${{ github.base_ref != matrix.namespace }}
+        uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          access_token: ${{ github.token }}
+      - name: Perform test
+        run: |
+          echo TESTING ...
