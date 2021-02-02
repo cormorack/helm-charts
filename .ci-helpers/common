@@ -8,3 +8,15 @@ full_namespace_await() {
     | xargs --max-args 1 --no-run-if-empty \
     kubectl rollout status --timeout=3m
 }
+
+full_development_await() {
+    kubectl get deploy,sts,ds -n development -o name \
+    | xargs --max-args 1 --no-run-if-empty \
+    kubectl rollout status --namespace development --timeout=3m
+}
+
+full_production_await() {
+    kubectl get deploy,sts,ds -n production -o name \
+    | xargs --max-args 1 --no-run-if-empty \
+    kubectl rollout status --namespace production --timeout=3m
+}
