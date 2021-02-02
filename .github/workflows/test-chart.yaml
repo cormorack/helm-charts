@@ -2,9 +2,9 @@ name: Test Portal Chart
 
 on:
   push:
-    paths: ["io2-portal/**"]
+    paths: ["io2-portal/**", "**/test-chart.yml", ".ci-helpers/common"]
   pull_request:
-    paths: ["io2-portal/**"]
+    paths: ["io2-portal/**", "**/test-chart.yml", ".ci-helpers/common"]
   workflow_dispatch:
 
 defaults:
