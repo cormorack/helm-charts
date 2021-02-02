@@ -1,6 +1,11 @@
 name: Cloud deployment validation
 
 on:
+  push:
+    paths: ["deployments/**", "io2-portal/**"]
+    branches:
+      - development
+      - production
   pull_request:
     paths: ["deployments/**", "io2-portal/**"]
     branches:
