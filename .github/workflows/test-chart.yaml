@@ -3,8 +3,6 @@ name: Test Portal Chart
 on:
   push:
     paths: ["io2-portal/**", "**/test-chart.yml", ".ci-helpers/common"]
-  pull_request:
-    paths: ["io2-portal/**", "**/test-chart.yml", ".ci-helpers/common"]
   workflow_dispatch:
 
 defaults:
@@ -14,7 +12,7 @@ defaults:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    if: "!contains(github.event.head_commit.message, '[skip chart test]') || !contains(github.event.pull_request.title, '[skip chart test]')"
+    if: "!contains(github.event.head_commit.message, '[skip chart test]')"
     strategy:
       # Keep running even if one variation of the job fail
       fail-fast: false
