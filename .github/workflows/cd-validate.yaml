@@ -68,6 +68,8 @@ jobs:
           metrics-enabled: false
           traefik-enabled: false
           docker-enabled: false
+      - name: Create namespace
+        run: kubectl create namespace ${{ env.namespace }}
       - name: Apply secrets
         run: kubectl apply -n ${{ env.namespace }} -f deployments/secrets/cava-secrets.yaml
       - name: Install chart and await readiness
@@ -134,6 +136,8 @@ jobs:
           metrics-enabled: false
           traefik-enabled: false
           docker-enabled: false
+      - name: Create namespace
+        run: kubectl create namespace ${{ env.namespace }}
       - name: Apply secrets
         run: kubectl apply -n ${{ env.namespace }} -f deployments/secrets/cava-secrets.yaml
       - name: Install chart and await readiness
