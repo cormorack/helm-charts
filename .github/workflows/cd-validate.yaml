@@ -77,12 +77,14 @@ jobs:
           helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
 
           . .ci-helpers/common
-          full_namespace_await
+          full_${{ env.namespace }}_await
 
       # GitHub Action reference: https://github.com/jupyterhub/action-k8s-namespace-report
       - name: Kubernetes namespace report
         uses: jupyterhub/action-k8s-namespace-report@v1
         if: always()
+        with:
+          namespace: ${{ env.namespace }}
 
   production-validate:
     runs-on: ubuntu-20.04
@@ -145,9 +147,11 @@ jobs:
           helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
 
           . .ci-helpers/common
-          full_namespace_await
+          full_${{ env.namespace }}_await
 
       # GitHub Action reference: https://github.com/jupyterhub/action-k8s-namespace-report
       - name: Kubernetes namespace report
         uses: jupyterhub/action-k8s-namespace-report@v1
         if: always()
+        with:
+          namespace: ${{ env.namespace }}
