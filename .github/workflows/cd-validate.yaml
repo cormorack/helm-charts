@@ -13,9 +13,9 @@ defaults:
     shell: bash
 
 jobs:
-  validate-values:
+  development-validate:
     runs-on: ubuntu-20.04
-    name: ${{ matrix.namespace }}-validate
+    if: "github.ref == 'development'"
     strategy:
       # Keep running even if one variation of the job fail
       fail-fast: false
@@ -27,21 +27,38 @@ jobs:
         # k3s-version: https://github.com/rancher/k3s/tags
         # k3s-channel: https://update.k3s.io/v1-release/channels
         k3s-channel: [v1.18]
-        namespace: [development, production]
-            
+    env:
+      namespace: ${{ github.ref }}
 
     steps:
       - uses: actions/checkout@v2
       - name: Print info
         run: |
           echo ${{ github.base_ref }}
-          echo ${{ matrix.namespace }}
           echo ${{ matrix.k3s-channel }}
-      - name: Cancel Previous Runs
-        if: ${{ github.base_ref != matrix.namespace }}
-        uses: styfle/cancel-workflow-action@0.7.0
-        with:
-          access_token: ${{ github.token }}
-      - name: Perform test
+          echo "Namespace: ${{ env.namespace }}"
+
+  production-validate:
+    runs-on: ubuntu-20.04
+    if: "github.ref == 'production'"
+    strategy:
+      # Keep running even if one variation of the job fail
+      fail-fast: false
+      matrix:
+        # We run this job multiple times with different parameterization
+        # specified below, these parameters have no meaning on their own and
+        # gain meaning on how job steps use them.
+        #
+        # k3s-version: https://github.com/rancher/k3s/tags
+        # k3s-channel: https://update.k3s.io/v1-release/channels
+        k3s-channel: [v1.18]
+    env:
+      namespace: ${{ github.ref }}
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Print info
         run: |
-          echo TESTING ...
+          echo ${{ github.base_ref }}
+          echo ${{ matrix.k3s-channel }}
+          echo "Namespace: ${{ env.namespace }}"
