@@ -12,6 +12,9 @@ defaults:
   run:
     shell: bash
 
+env:
+  namespace: ${{ github.base_ref }}
+
 jobs:
   development-validate:
     runs-on: ubuntu-20.04
@@ -27,8 +30,6 @@ jobs:
         # k3s-version: https://github.com/rancher/k3s/tags
         # k3s-channel: https://update.k3s.io/v1-release/channels
         k3s-channel: [v1.18]
-    env:
-      namespace: ${{ github.ref }}
 
     steps:
       - uses: actions/checkout@v2
@@ -52,8 +53,6 @@ jobs:
         # k3s-version: https://github.com/rancher/k3s/tags
         # k3s-channel: https://update.k3s.io/v1-release/channels
         k3s-channel: [v1.18]
-    env:
-      namespace: ${{ github.ref }}
 
     steps:
       - uses: actions/checkout@v2
