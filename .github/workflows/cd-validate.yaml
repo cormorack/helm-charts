@@ -16,6 +16,7 @@ jobs:
   validate-values:
     runs-on: ubuntu-20.04
     name: ${{ matrix.namespace }}-validate
+    if: "github.base_ref == matrix.namespace"
     strategy:
       # Keep running even if one variation of the job fail
       fail-fast: false
@@ -27,7 +28,7 @@ jobs:
         # k3s-version: https://github.com/rancher/k3s/tags
         # k3s-channel: https://update.k3s.io/v1-release/channels
         k3s-channel: [v1.18]
-        namespace: [development]
+        namespace: [development, production]
             
 
     steps:
