@@ -15,7 +15,7 @@ defaults:
 jobs:
   development-validate:
     runs-on: ubuntu-20.04
-    if: "github.ref == 'development'"
+    if: "github.base_ref == 'development'"
     strategy:
       # Keep running even if one variation of the job fail
       fail-fast: false
@@ -40,7 +40,7 @@ jobs:
 
   production-validate:
     runs-on: ubuntu-20.04
-    if: "github.ref == 'production'"
+    if: "github.base_ref == 'production'"
     strategy:
       # Keep running even if one variation of the job fail
       fail-fast: false
