@@ -29,6 +29,10 @@ jobs:
           - k3s-channel: v1.18
 
     steps:
+      - uses: styfle/cancel-workflow-action@0.7.0
+        with:
+          workflow_id: 5133254
+          access_token: ${{ github.token }}
       - uses: actions/checkout@v2
       - name: Install helm
         run: |
