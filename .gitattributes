@@ -1,1 +1,2 @@
 .ci-helpers/deployments/secrets/** filter=git-crypt diff=git-crypt
+deployments/** filter=git-crypt diff=git-crypt
