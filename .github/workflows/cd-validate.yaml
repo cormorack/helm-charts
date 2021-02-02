@@ -1,0 +1,39 @@
+name: Cloud deployment validation
+
+on:
+  pull_request:
+    paths: ["deployments/**", "io2-portal/**"]
+    branches:
+      - development
+      - production
+  workflow_dispatch:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  validate-values:
+    runs-on: ubuntu-20.04
+    name: ${{ matrix.namespace }}-validate
+    strategy:
+      # Keep running even if one variation of the job fail
+      fail-fast: false
+      matrix:
+        # We run this job multiple times with different parameterization
+        # specified below, these parameters have no meaning on their own and
+        # gain meaning on how job steps use them.
+        #
+        # k3s-version: https://github.com/rancher/k3s/tags
+        # k3s-channel: https://update.k3s.io/v1-release/channels
+        k3s-channel: [v1.18]
+        namespace: [development]
+            
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Print info
+        run: |
+          echo ${{ github.base_ref }}
+          echo ${{ matrix.namespace }}
+          echo ${{ matrix.k3s-channel }}
