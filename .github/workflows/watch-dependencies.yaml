@@ -74,7 +74,7 @@ jobs:
           labels: chart/${{ matrix.service-name }}
           branch: upgrade-${{ matrix.service-name }}-prod
           delete-branch: true
-          base: main
+          base: production
           body: |
             This PR upgrades the `io2-portal` chart to depend on ${{ matrix.service-name }} version `${{ steps.remote_chart.outputs.tag }}`.
   
