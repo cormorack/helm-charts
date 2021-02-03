@@ -1,0 +1,69 @@
+name: Portal Cloud Dev Deployment
+
+on:
+  push:
+    paths: ["deployments/**", "io2-portal/**"]
+    branches:
+      - development
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy my app
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install helm
+        run: |
+          curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | bash
+      - name: Install git-crypt
+        run: sudo apt-get install git-crypt
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2
+      - name: Copy files to the test website with the AWS CLI
+        run: |
+          aws s3 cp ${{ secrets.GIT_CRYPT_KEY }} ./crypt.key
+      - name: Unlock git-crypt Secrets
+        run: git-crypt unlock ./crypt.key && git-crypt status
+
+      # Linting
+      - name: Update chart dependencies
+        run: |
+          helm dependency update ./io2-portal --namespace ${{ env.namespace }}
+      - name: Lint chart's templates
+        run: |
+          helm lint ./io2-portal --strict --values deployments/values-${{ env.namespace }}.yaml
+
+      # Initialize github deployment action
+      - name: start deployment
+        uses: bobheadxi/deployments@v0.4.3
+        id: deployment
+        with:
+          step: start
+          token: ${{ secrets.GITHUB_TOKEN }}
+          env: development
+
+      - name: Set k8s context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+          context: cavakops.k8s.local
+        id: setcontext
+
+      - name: Kubernetes namespace report
+        uses: jupyterhub/action-k8s-namespace-report@v1
+        if: always()
+
+      - name: update deployment status
+        uses: bobheadxi/deployments@v0.4.3
+        if: always()
+        with:
+          step: finish
+          token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
