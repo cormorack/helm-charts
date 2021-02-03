@@ -7,6 +7,9 @@ on:
       - development
   workflow_dispatch:
 
+env:
+  namespace: development
+
 jobs:
   deploy:
     name: Deploy my app
@@ -45,7 +48,7 @@ jobs:
         with:
           step: start
           token: ${{ secrets.GITHUB_TOKEN }}
-          env: development
+          env: ${{ env.namespace }}
 
       - name: Set k8s context
         uses: azure/k8s-set-context@v1
