@@ -79,20 +79,20 @@ jobs:
           INSTALLED=$(helm ls --namespace ${{ env.namespace }} | grep "io2-portal" | wc -l)
           echo "::set-output name=INSTALLED::$INSTALLED"
 
-      # - name: Install/Upgrade chart and await readiness
-      #   if: success()
-      #   run: |
-      #     if [ ${{ steps.chart_check.outputs.INSTALLED }} -eq 0 ];
-      #     then
-      #       echo "io2-portal not installed. Installing ..."
-      #       helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
-      #     else
-      #       echo "io2-portal installed. Upgrading ..."
-      #       helm upgrade --namespace ${{ env.namespace }} -f deployments/values-${{ env.namespace }}.yaml io2-portal ./io2-portal
-      #     fi
+      - name: Install/Upgrade chart and await readiness
+        if: success()
+        run: |
+          if [ ${{ steps.chart_check.outputs.INSTALLED }} -eq 0 ];
+          then
+            echo "io2-portal not installed. Installing ..."
+            helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
+          else
+            echo "io2-portal installed. Upgrading ..."
+            helm upgrade --namespace ${{ env.namespace }} -f deployments/values-${{ env.namespace }}.yaml io2-portal ./io2-portal
+          fi
 
-      #     . .ci-helpers/common
-      #     full_${{ env.namespace }}_await
+          . .ci-helpers/common
+          full_${{ env.namespace }}_await
 
 
       - name: Kubernetes namespace report
