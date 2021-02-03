@@ -11,8 +11,77 @@ env:
   namespace: development
 
 jobs:
+  development-validate:
+    runs-on: ubuntu-20.04
+    strategy:
+      # Keep running even if one variation of the job fail
+      fail-fast: false
+      matrix:
+        # We run this job multiple times with different parameterization
+        # specified below, these parameters have no meaning on their own and
+        # gain meaning on how job steps use them.
+        #
+        # k3s-version: https://github.com/rancher/k3s/tags
+        # k3s-channel: https://update.k3s.io/v1-release/channels
+        k3s-channel: [v1.18]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Print info
+        run: |
+          echo "K8 Version: ${{ matrix.k3s-channel }}"
+          echo "Namespace: ${{ env.namespace }}"
+      - name: Install helm
+        run: |
+          curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get-helm-3 | bash
+      - name: Install git-crypt
+        run: sudo apt-get install git-crypt
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
+          aws-region: us-west-2
+      - name: Copy files to the test website with the AWS CLI
+        run: |
+          aws s3 cp ${{ secrets.GIT_CRYPT_KEY }} ./crypt.key
+      - name: Unlock git-crypt Secrets
+        run: git-crypt unlock ./crypt.key && git-crypt status
+      - name: Update chart dependencies
+        run: |
+          helm dependency update ./io2-portal --namespace ${{ env.namespace }}
+      - name: Lint chart's templates
+        run: |
+          helm lint ./io2-portal --strict --values deployments/values-${{ env.namespace }}.yaml
+      # Starts a k8s cluster with NetworkPolicy enforcement and installs kubectl
+      #
+      # ref: https://github.com/manics/action-k3s-helm/
+      - uses: manics/action-k3s-helm@v1
+        with:
+          k3s-channel: ${{ matrix.k3s-channel }}
+          metrics-enabled: false
+          traefik-enabled: false
+          docker-enabled: false
+      - name: Create namespace
+        run: kubectl create namespace ${{ env.namespace }}
+      - name: Apply secrets
+        run: kubectl apply -n ${{ env.namespace }} -f deployments/secrets/cava-secrets.yaml
+      - name: Install chart and await readiness
+        run: |
+          helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
+
+          . .ci-helpers/common
+          full_${{ env.namespace }}_await
+
+      # GitHub Action reference: https://github.com/jupyterhub/action-k8s-namespace-report
+      - name: Kubernetes namespace report
+        uses: jupyterhub/action-k8s-namespace-report@v1
+        if: always()
+        with:
+          namespace: ${{ env.namespace }}
   deploy:
     name: Deploy my app
+    needs: development-validate
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
