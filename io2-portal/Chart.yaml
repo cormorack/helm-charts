@@ -30,7 +30,7 @@ dependencies:
     repository: "https://cormorack.github.io/cava-media"
     condition: cava-media.enabled
   - name: cava-metadata
-    version: "0.1.1-rc.4"
+    version: "0.1.1-rc.6"
     repository: "https://cormorack.github.io/cava-metadata"
     condition: cava-metadata.enabled
 
