@@ -68,7 +68,7 @@ jobs:
         run: kubectl apply -n ${{ env.namespace }} -f deployments/secrets/cava-secrets.yaml
       - name: Install chart and await readiness
         run: |
-          helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
+          helm upgrade io2-portal ./io2-portal --install --wait --cleanup-on-fail --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
 
           . .ci-helpers/common
           full_${{ env.namespace }}_await
@@ -146,24 +146,10 @@ jobs:
       - name: Apply secrets
         run: kubectl apply -n ${{ env.namespace }} -f deployments/secrets/cava-secrets.yaml
 
-      - name: Check if chart is installed
-        id: chart_check
-        run: |
-          INSTALLED=$(helm ls --namespace ${{ env.namespace }} | grep "io2-portal" | wc -l)
-          echo "::set-output name=INSTALLED::$INSTALLED"
-
       - name: Install/Upgrade chart and await readiness
-        if: success()
         run: |
-          if [ ${{ steps.chart_check.outputs.INSTALLED }} -eq 0 ];
-          then
-            echo "io2-portal not installed. Installing ..."
-            helm install io2-portal ./io2-portal --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
-          else
-            echo "io2-portal installed. Upgrading ..."
-            helm upgrade --namespace ${{ env.namespace }} -f deployments/values-${{ env.namespace }}.yaml io2-portal ./io2-portal
-          fi
-
+          helm upgrade io2-portal ./io2-portal --install --wait  --cleanup-on-fail --create-namespace --namespace ${{ env.namespace }} --values deployments/values-${{ env.namespace }}.yaml
+          
           . .ci-helpers/common
           full_${{ env.namespace }}_await
 
