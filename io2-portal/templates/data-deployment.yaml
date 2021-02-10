@@ -1,0 +1,43 @@
+{{- if .Values.dataService.enabled -}}
+{{- $serviceName := default (include "io2-portal.name" .) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $serviceName }}-data
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}-data
+spec:
+  replicas: {{ .Values.dataService.replicas }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "io2-portal.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: {{ $serviceName }}-data
+  template:
+    metadata:
+      labels:
+        {{- include "io2-portal.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: {{ $serviceName }}-data
+    spec:
+      {{- with .Values.dataService.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      imagePullSecrets:
+        {{- toYaml .Values.dataService.image.pullSecrets | nindent 8 }}
+      restartPolicy: {{ .Values.dataService.restartPolicy }}
+      containers:
+        - name: {{ $serviceName }}-data
+          env: 
+          {{- if .Values.dataService.env }}
+            {{- toYaml .Values.dataService.env | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.dataService.image.repository }}:{{ .Values.dataService.image.tag }}"
+          imagePullPolicy: {{ .Values.dataService.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.dataService.resources | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.dataService.service.containerPort }}
+{{- end -}}

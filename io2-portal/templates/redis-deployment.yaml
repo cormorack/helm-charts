@@ -1,0 +1,43 @@
+{{- if or (eq .Values.dataService.enabled true) (eq .Values.redisCache.enabled true) -}}
+{{- $serviceName := default (include "io2-portal.name" .) -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $serviceName }}-redis-cache
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}-redis-cache
+spec:
+  replicas: {{ .Values.redisCache.replicas }}
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      {{- include "io2-portal.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: {{ $serviceName }}-redis-cache
+  template:
+    metadata:
+      labels:
+        {{- include "io2-portal.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: {{ $serviceName }}-redis-cache
+    spec:
+      {{- with .Values.redisCache.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      imagePullSecrets:
+        {{- toYaml .Values.redisCache.image.pullSecrets | nindent 8 }}
+      restartPolicy: {{ .Values.redisCache.restartPolicy }}
+      containers:
+        - name: {{ $serviceName }}-redis-cache
+          env: 
+          {{- if .Values.redisCache.env }}
+            {{- toYaml .Values.redisCache.env | nindent 12 }}
+          {{- end }}
+          image: "{{ .Values.redisCache.image.repository }}:{{ .Values.redisCache.image.tag }}"
+          imagePullPolicy: {{ .Values.redisCache.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.redisCache.resources | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.redisCache.service.containerPort }}
+{{- end -}}

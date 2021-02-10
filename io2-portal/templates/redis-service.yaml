@@ -1,0 +1,22 @@
+{{- if or (eq .Values.dataService.enabled true) (eq .Values.redisCache.enabled true) -}}
+{{- $serviceName := default (include "io2-portal.name" .) -}}
+{{- $servicePortName := .Values.redisCache.service.portName -}}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}-redis-cache
+  name: {{ $serviceName }}-redis-cache
+spec:
+  type: {{ .Values.redisCache.service.type }}
+  ports:
+    - name: {{ $servicePortName }}
+      port: {{ .Values.redisCache.service.port }}
+      targetPort: {{ .Values.redisCache.service.targetPort }}
+  selector:
+    {{- include "io2-portal.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}-redis-cache
+status:
+  loadBalancer: {}
+{{- end -}}

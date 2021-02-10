@@ -12,3 +12,83 @@ cava-media:
 
 traefik:
   enabled: false
+
+# Older Services ===========================
+# Data config ------------------------------
+# NOTE: Old data service including this for now to 
+# make sure old production works
+dataService:
+  enabled: false
+  path: /data
+  service:
+    targetPort: 80
+    portName: http
+    type: ClusterIP
+    port: 80
+    containerPort: 5000
+    servicePortName: http
+  image:
+    repository: cormorack/cava_data_server
+    tag: "master-20200408"
+    pullSecrets: []
+    pullPolicy: Always
+  replicas: 1
+  resources: {}
+  env:
+    - name: AWS_ACCESS_KEY_ID
+      value: ""
+    - name: AWS_SECRET_ACCESS_KEY
+      value: ""
+    - name: OOI_TOKEN
+      value: ""
+    - name: OOI_USERNAME
+      value: ""
+    - name: OLD_CAVA_API_BASE
+      value: ""
+    - name: REDIS_HOST
+      value: ""
+    - name: REDIS_PORT
+      value: ""
+  restartPolicy: Always
+  nodeSelector: {}
+  ingress:
+    expose: false
+
+    # If secure, must provide tls
+    secure: false
+
+    # Adds tls for domain certification
+    # tls:
+    #   certResolver: DEVELOPMENT
+    tls: {}
+# End data config --------------------------
+
+# Redis Cache config -----------------------
+# Redis cache is needed for dataService
+redisCache:
+  # Overridden by dataService being enabled
+  enabled: false
+  service:
+    targetPort: 6379
+    portName: http
+    type: ClusterIP
+    port: 6379
+    containerPort: 6379
+    servicePortName: http
+  image:
+    repository: redis
+    tag: latest
+    pullSecrets: []
+    pullPolicy: Always
+  replicas: 1
+  resources:
+    requests:
+      memory: 75Mi
+      cpu: 30m
+    limits:
+      memory: 200Mi
+      cpu: 250m
+  env: []
+  restartPolicy: Always
+  nodeSelector: {}
+# End redis cache config -------------------

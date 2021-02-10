@@ -1,0 +1,22 @@
+{{- if .Values.dataService.enabled -}}
+{{- $serviceName := default (include "io2-portal.name" .) -}}
+{{- $servicePortName := .Values.dataService.service.portName -}}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}-data
+  name: {{ $serviceName }}-data
+spec:
+  type: {{ .Values.dataService.service.type }}
+  ports:
+    - name: {{ $servicePortName }}
+      port: {{ .Values.dataService.service.port }}
+      targetPort: {{ .Values.dataService.service.targetPort }}
+  selector:
+    {{- include "io2-portal.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $serviceName }}-data
+status:
+  loadBalancer: {}
+{{- end -}}
