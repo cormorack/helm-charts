@@ -4,7 +4,7 @@
 
 This repository contains the Interactive Oceans Services helm chart.
 
-## Local Testing
+## Local/Development Deployment
 
 0. Install docker, k3d, kubectl, helm, and stern if it doesn't exists in system yet
 
