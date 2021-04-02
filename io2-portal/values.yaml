@@ -4,6 +4,10 @@
 nameOverride: io2-portal
 fullnameOverride: io2-portal
 
+secrets:
+  name: io2-portal-secrets
+  data: {}
+
 cava-metadata:
   enabled: true
 

@@ -37,7 +37,15 @@ This repository contains the Interactive Oceans Services helm chart.
 
     ``` bash
     # Note: https://github.com/rancher/k3d/issues/104#issuecomment-542184960
-    k3d cluster create --k3s-server-arg --no-deploy --k3s-server-arg traefik
+    # -p options are optional ... it is used to port forward to the host machine
+    
+    k3d cluster create \
+        -p "9000:9000@loadbalancer" \
+        -p "443:443@loadbalancer" \
+        -p "80:80@loadbalancer" \
+        --k3s-server-arg \
+        --no-deploy \
+        --k3s-server-arg traefik
     ```
 
 2. Connect to cluster and check
@@ -53,32 +61,19 @@ This repository contains the Interactive Oceans Services helm chart.
     helm dependencies update ./io2-portal
     ```
 
-4. Install secrets
+4. Install/upgrade `io2-portal` chart.
 
     ```bash
-    kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml
+    helm upgrade io2-portal ./io2-portal --install --cleanup-on-fail --create-namespace --namespace development --values .ci-helpers/deployments/secrets/dev-test.yaml
     ```
 
-5. Install `io2-portal` chart.
+5. Delete chart only
 
     ```bash
-    helm install io2-portal ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml
+    helm delete --namespace development io2-portal
     ```
 
-6. Any changes can be updated using following command
-
-    ```bash
-    helm upgrade -f .ci-helpers/deployments/secrets/dev-test.yaml io2-portal ./io2-portal
-    ```
-
-7. Clean up with the following commands
-
-    ```bash
-    helm delete io2-portal
-    kubectl delete secrets cava-secrets
-    ```
-
-8. Tear down k3s cluster
+6. Tear down k3s cluster
 
     ```bash
     k3d cluster delete
