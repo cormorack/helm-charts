@@ -4,11 +4,18 @@
 nameOverride: io2-portal
 fullnameOverride: io2-portal
 
+secrets:
+  name: io2-portal-secrets
+  data: {}
+
 cava-metadata:
   enabled: true
 
 cava-media:
   enabled: true
+
+cava-data:
+  enabled: false
 
 traefik:
   enabled: false

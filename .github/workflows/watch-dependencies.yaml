@@ -22,7 +22,8 @@ jobs:
           - cava-metadata
     steps:
       - uses: actions/checkout@v2
-
+        with:
+          ref: production
       # ref: https://github.com/oprypin/find-latest-tag
       - name: Find latest tag of dependency
         id: remote_chart
@@ -81,7 +82,7 @@ jobs:
   check-dev-chart:
     name: ${{ matrix.service-name }}-dev-chart-check
     runs-on: ubuntu-20.04
-    if: ${{ github.ref == 'refs/heads/main' }}
+    if: github.ref == 'refs/heads/main'
     strategy:
       matrix:
         service-name:
@@ -89,6 +90,8 @@ jobs:
           - cava-metadata
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: development
 
       # ref: https://github.com/oprypin/find-latest-tag
       - name: Find latest tag of dependency
