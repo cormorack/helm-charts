@@ -33,5 +33,9 @@ dependencies:
     version: "0.1.0"
     repository: "https://cormorack.github.io/cava-metadata"
     condition: cava-metadata.enabled
+  - name: cava-data
+    version: "0.1.1"
+    repository: "https://cormorack.github.io/cava-data"
+    condition: cava-data.enabled
 
 icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm.png

@@ -10,6 +10,9 @@ cava-metadata:
 cava-media:
   enabled: true
 
+cava-data:
+  enabled: true
+
 traefik:
   enabled: false
 
