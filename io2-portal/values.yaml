@@ -15,7 +15,7 @@ cava-media:
   enabled: true
 
 cava-data:
-  enabled: true
+  enabled: false
 
 traefik:
   enabled: false
