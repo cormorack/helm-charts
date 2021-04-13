@@ -97,6 +97,7 @@ jobs:
         service-name:
           - cava-media
           - cava-metadata
+          - cava-data
     steps:
       - uses: actions/checkout@v2
         with:
