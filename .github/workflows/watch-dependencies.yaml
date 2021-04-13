@@ -48,24 +48,24 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
-          find: "${{ steps.local_chart.outputs.dependencies_cava-media_version }}"
-          replace: "${{ steps.remote_chart.outputs.tag }}"
+          find: "\"${{ steps.local_chart.outputs.dependencies_cava-media_version }}\""
+          replace: "\"${{ steps.remote_chart.outputs.tag }}\""
       - name: Replace current with latest in Chart.yaml
         id: cava_meta_replace
         if: ${{ !contains(steps.remote_chart.outputs.tag, 'rc') && matrix.service-name == 'cava-metadata' }}
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
-          find: "${{ steps.local_chart.outputs.dependencies_cava-metadata_version }}"
-          replace: "${{ steps.remote_chart.outputs.tag }}"
+          find: "\"${{ steps.local_chart.outputs.dependencies_cava-metadata_version }}\""
+          replace: "\"${{ steps.remote_chart.outputs.tag }}\""
       - name: Replace current with latest in Chart.yaml
         id: cava_data_replace
         if: ${{ !contains(steps.remote_chart.outputs.tag, 'rc') && matrix.service-name == 'cava-data' }}
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
-          find: "${{ steps.local_chart.outputs.dependencies_cava-data_version }}"
-          replace: "${{ steps.remote_chart.outputs.tag }}"
+          find: "\"${{ steps.local_chart.outputs.dependencies_cava-data_version }}\""
+          replace: "\"${{ steps.remote_chart.outputs.tag }}\""
 
       # ref: https://github.com/jacobtomlinson/gha-find-replace
       - name: Git diff changes
@@ -125,16 +125,16 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
-          find: "${{ steps.local_chart.outputs.dependencies_cava-media_version }}"
-          replace: "${{ steps.remote_chart.outputs.tag }}"
+          find: "\"${{ steps.local_chart.outputs.dependencies_cava-media_version }}\""
+          replace: "\"${{ steps.remote_chart.outputs.tag }}\""
       - name: Replace current with latest in Chart.yaml
         id: cava_meta_replace
         if: ${{ matrix.service-name == 'cava-metadata' }}
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
-          find: "${{ steps.local_chart.outputs.dependencies_cava-metadata_version }}"
-          replace: "${{ steps.remote_chart.outputs.tag }}"
+          find: "\"${{ steps.local_chart.outputs.dependencies_cava-metadata_version }}\""
+          replace: "\"${{ steps.remote_chart.outputs.tag }}\""
       - name: Replace current with latest in Chart.yaml
         id: cava_data_replace
         if: ${{ matrix.service-name == 'cava-data' }}
