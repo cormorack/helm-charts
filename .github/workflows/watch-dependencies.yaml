@@ -141,8 +141,8 @@ jobs:
         uses: jacobtomlinson/gha-find-replace@0.1.2
         with:
           include: "io2-portal/Chart.yaml"
-          find: "(${{ steps.local_chart.outputs.dependencies_cava-data_version }})\\n"
-          replace: "${{ steps.remote_chart.outputs.tag }}"
+          find: "\"(${{ steps.local_chart.outputs.dependencies_cava-data_version }})\""
+          replace: "\"${{ steps.remote_chart.outputs.tag }}\""
 
       # ref: https://github.com/jacobtomlinson/gha-find-replace
       - name: Git diff changes
