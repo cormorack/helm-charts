@@ -34,7 +34,7 @@ dependencies:
     repository: "https://cormorack.github.io/cava-metadata"
     condition: cava-metadata.enabled
   - name: cava-data
-    version: "0.1.2-rc.4"
+    version: "0.1.2-rc.5"
     repository: "https://cormorack.github.io/cava-data"
     condition: cava-data.enabled
 
