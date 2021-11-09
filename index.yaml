@@ -3,6 +3,34 @@ entries:
   io2-portal:
   - apiVersion: v2
     appVersion: 3.1.1
+    created: "2021-11-09T17:26:03.377064615Z"
+    dependencies:
+    - condition: traefik.enabled
+      name: traefik
+      repository: https://helm.traefik.io/traefik
+      version: 9.12.3
+    - condition: cava-media.enabled
+      name: cava-media
+      repository: https://cormorack.github.io/cava-media
+      version: 0.1.2
+    - condition: cava-metadata.enabled
+      name: cava-metadata
+      repository: https://cormorack.github.io/cava-metadata
+      version: 0.1.2
+    - condition: cava-data.enabled
+      name: cava-data
+      repository: https://cormorack.github.io/cava-data
+      version: 0.1.3
+    description: A Helm chart for Kubernetes
+    digest: 62aa68f3cdc2c60b8a152c71ab3786572514356434b5059862c87b1a02bc7f8c
+    icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm.png
+    name: io2-portal
+    type: application
+    urls:
+    - https://cormorack.github.io/helm-charts/io2-portal-1.0.2-rc.5.tgz
+    version: 1.0.2-rc.5
+  - apiVersion: v2
+    appVersion: 3.1.1
     created: "2021-11-09T01:04:00.746045875Z"
     dependencies:
     - condition: traefik.enabled
@@ -208,4 +236,4 @@ entries:
     urls:
     - https://cormorack.github.io/helm-charts/io2-portal-0.1.0.tgz
     version: 0.1.0
-generated: "2021-11-09T01:04:00.729457461Z"
+generated: "2021-11-09T17:26:03.351185441Z"
