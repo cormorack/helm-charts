@@ -25,6 +25,10 @@ dependencies:
     version: "9.12.3"
     repository: "https://helm.traefik.io/traefik"
     condition: traefik.enabled
+  - name: keda
+    version: "2.3.2"
+    repository: "https://kedacore.github.io/charts"
+    condition: keda.enabled
   - name: cava-media
     version: "0.1.2"
     repository: "https://cormorack.github.io/cava-media"

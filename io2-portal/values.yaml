@@ -20,6 +20,9 @@ cava-data:
 traefik:
   enabled: false
 
+keda:
+  enabled: false
+
 # Older Services ===========================
 # Data config ------------------------------
 # NOTE: Old data service including this for now to 
