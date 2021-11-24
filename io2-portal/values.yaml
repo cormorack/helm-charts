@@ -37,6 +37,7 @@ traefik:
 
 keda:
   enabled: false
+  exists: false
 
 # Older Services ===========================
 # Data config ------------------------------

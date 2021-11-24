@@ -1,5 +1,6 @@
 {{- $dataEnabled := index .Values "cava-data" "enabled" -}}
-{{- if and .Values.keda.enabled $dataEnabled -}}
+{{- if or .Values.keda.enabled .Values.keda.exists -}}
+{{- if $dataEnabled -}}
 {{- $dataWorker := index .Values "cava-data" "worker" -}}
 {{- if hasKey $dataWorker "keda" -}}
 {{- $dataWorkerKeda := index .Values "cava-data" "worker" "keda" -}}
@@ -41,6 +42,7 @@ spec:
       value: {{ $dataWorkerKeda.queue.length | default "2" | quote }}
     authenticationRef:
       name: {{ $dataWorkerKeda.name }}-trigger-auth
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
