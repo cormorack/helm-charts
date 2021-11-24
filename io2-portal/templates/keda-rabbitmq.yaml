@@ -1,0 +1,46 @@
+{{- $dataEnabled := index .Values "cava-data" "enabled" -}}
+{{- if and .Values.keda.enabled $dataEnabled -}}
+{{- $dataWorker := index .Values "cava-data" "worker" -}}
+{{- if hasKey $dataWorker "keda" -}}
+{{- $dataWorkerKeda := index .Values "cava-data" "worker" "keda" -}}
+{{- if $dataWorkerKeda -}}
+apiVersion: keda.sh/v1alpha1
+kind: TriggerAuthentication
+metadata:
+  name: {{ $dataWorkerKeda.name }}-trigger-auth
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $dataWorkerKeda.name }}-trigger-auth
+spec:
+  {{- if $dataWorkerKeda.secretTargetRef }}
+  secretTargetRef:
+    {{- toYaml $dataWorkerKeda.secretTargetRef | nindent 4 }}
+  {{- else }}
+  secretTargetRef: []
+  {{- end }}
+---
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ $dataWorkerKeda.name }}-scaledobject
+  labels:
+    {{- include "io2-portal.labels" . | nindent 4 }}
+    app.kubernetes.io/component: {{ $dataWorkerKeda.name }}-scaledobject
+spec:
+  scaleTargetRef:
+    name: cava-data-worker
+  pollingInterval: {{ $dataWorkerKeda.pollingInterval | default 3 }}
+  minReplicaCount: {{ $dataWorkerKeda.replicas.min | default 1 }}
+  maxReplicaCount: {{ $dataWorkerKeda.replicas.max | default 10 }}
+  triggers:
+  - type: rabbitmq
+    metadata:
+      protocol: {{ $dataWorkerKeda.queue.protocol | default "amqp" | quote }}
+      queueName: {{ $dataWorkerKeda.queue.name | default "data-queue" | quote }}
+      mode: QueueLength
+      value: {{ $dataWorkerKeda.queue.length | default "2" | quote }}
+    authenticationRef:
+      name: {{ $dataWorkerKeda.name }}-trigger-auth
+{{- end -}}
+{{- end -}}
+{{- end -}}
