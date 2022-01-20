@@ -41,5 +41,13 @@ dependencies:
     version: "0.1.4-rc.1"
     repository: "https://cormorack.github.io/cava-data"
     condition: cava-data.enabled
+  - name: cava-realtime
+    version: "0.1.2"
+    repository: "https://cormorack.github.io/cava-realtime"
+    condition: cava-realtime.enabled
+  - name: cava-realtime-client
+    version: "0.1.1"
+    repository: "https://cormorack.github.io/cava-realtime-client"
+    condition: cava-realtime-client.enabled
 
 icon: https://interactiveoceans.washington.edu/wp-content/uploads/2018/12/interactive-oceans-logo-symbol-only_sm.png

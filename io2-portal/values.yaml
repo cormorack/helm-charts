@@ -32,6 +32,16 @@ cava-data:
   #       name: "data-queue"
   #       length: "2"
 
+cava-realtime:
+  enabled: false
+
+cava-realtime-client:
+  enabled: false
+
+  # This should be disabled if the other setting is enabled!!
+  cava-realtime:
+    enabled: false
+
 traefik:
   enabled: false
 
