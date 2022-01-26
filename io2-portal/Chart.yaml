@@ -46,7 +46,7 @@ dependencies:
     repository: "https://cormorack.github.io/cava-realtime"
     condition: cava-realtime.enabled
   - name: cava-realtime-client
-    version: "0.1.2-rc.1"
+    version: "0.1.2-rc.2"
     repository: "https://cormorack.github.io/cava-realtime-client"
     condition: cava-realtime-client.enabled
 
