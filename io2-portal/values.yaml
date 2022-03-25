@@ -16,9 +16,38 @@ cava-media:
 
 cava-data:
   enabled: false
+  # worker:
+  #   keda:
+  #     name: "cava-data-worker"
+  #     secretTargetRef: []
+  #     # secretTargetRef:
+  #     # - parameter: host
+  #     #   name: cava-secrets
+  #     #   key: rabbitmq-host
+  #     replicas:
+  #       min: 1
+  #       max: 10
+  #     pollingInterval: 3
+  #     queue:
+  #       name: "data-queue"
+  #       length: "2"
+
+cava-realtime:
+  enabled: false
+
+cava-realtime-client:
+  enabled: false
+
+  # This should be disabled if the other setting is enabled!!
+  cava-realtime:
+    enabled: false
 
 traefik:
   enabled: false
+
+keda:
+  enabled: false
+  exists: false
 
 # Older Services ===========================
 # Data config ------------------------------
