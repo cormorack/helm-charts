@@ -34,12 +34,19 @@ spec:
   minReplicaCount: {{ $dataWorkerKeda.replicas.min | default 1 }}
   maxReplicaCount: {{ $dataWorkerKeda.replicas.max | default 10 }}
   triggers:
-  - type: rabbitmq
+  - type: {{ $dataWorkerKeda.queue.type | default "rabbitmq" | quote }}
+    {{- if eq $dataWorkerKeda.queue.type "rabbitmq" }}
     metadata:
       protocol: {{ $dataWorkerKeda.queue.protocol | default "amqp" | quote }}
       queueName: {{ $dataWorkerKeda.queue.name | default "data-queue" | quote }}
       mode: QueueLength
       value: {{ $dataWorkerKeda.queue.length | default "2" | quote }}
+    {{- else if eq $dataWorkerKeda.queue.type "aws-sqs-queue" }}
+    metadata:
+      queueURL: {{ $dataWorkerKeda.queue.name | default "data-queue" | quote }}
+      queueLength: {{ $dataWorkerKeda.queue.length | default "2" | quote }}
+      awsRegion: {{ $dataWorkerKeda.queue.region | default "us-west-2" | quote }}
+    {{- end }}
     authenticationRef:
       name: {{ $dataWorkerKeda.name }}-trigger-auth
 {{- end -}}
