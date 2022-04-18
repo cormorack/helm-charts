@@ -20,17 +20,35 @@ cava-data:
   #   keda:
   #     name: "cava-data-worker"
   #     secretTargetRef: []
+  #     # Below example for rabbitmq
   #     # secretTargetRef:
   #     # - parameter: host
   #     #   name: cava-secrets
   #     #   key: rabbitmq-host
+  #     #
+  #     # Below example for aws sqs
+  #     # secretTargetRef:
+  #     # - parameter: awsAccessKeyID     # Required.
+  #     #   name: cava-secrets          # Required.
+  #     #   key: AWS_ACCESS_KEY_ID        # Required.
+  #     # - parameter: awsSecretAccessKey # Required.
+  #     #   name: cava-secrets            # Required.
+  #     #   key: AWS_SECRET_ACCESS_KEY    # Required.
   #     replicas:
   #       min: 1
   #       max: 10
   #     pollingInterval: 3
+  #     # Below example for rabbitmq
   #     queue:
+  #       type: "rabbitmq"
   #       name: "data-queue"
   #       length: "2"
+  #     # Below example for aws sqs
+  #     # queue:
+  #     #   type: "aws-sqs-queue"
+  #     #   name: "data-queue"
+  #     #   length: "2"
+  #     #   region: "us-west-2"
 
 cava-realtime:
   enabled: false
