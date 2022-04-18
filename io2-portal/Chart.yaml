@@ -14,7 +14,7 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 1.0.4-rc.8
+version: 1.0.4-rc.9
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
@@ -38,7 +38,7 @@ dependencies:
     repository: "https://cormorack.github.io/cava-metadata"
     condition: cava-metadata.enabled
   - name: cava-data
-    version: "0.1.5-rc.2"
+    version: "0.1.5-rc.3"
     repository: "https://cormorack.github.io/cava-data"
     condition: cava-data.enabled
   - name: cava-realtime
