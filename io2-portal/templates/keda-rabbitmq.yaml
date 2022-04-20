@@ -43,7 +43,7 @@ spec:
       value: {{ $dataWorkerKeda.queue.length | default "2" | quote }}
     {{- else if eq $dataWorkerKeda.queue.type "aws-sqs-queue" }}
     metadata:
-      queueURL: {{ $dataWorkerKeda.queue.name | default "data-queue" | quote }}
+      queueURL: https://sqs.{{ $dataWorkerKeda.queue.region | default "us-west-2" }}.amazonaws.com/{{ $dataWorkerKeda.queue.account_id }}/{{ $dataWorkerKeda.queue.name | default "data-queue" }}
       queueLength: {{ $dataWorkerKeda.queue.length | default "2" | quote }}
       awsRegion: {{ $dataWorkerKeda.queue.region | default "us-west-2" | quote }}
     {{- end }}
