@@ -46,6 +46,7 @@ cava-data:
   #     # Below example for aws sqs
   #     # queue:
   #     #   type: "aws-sqs-queue"
+  #     #   account_id: 123451786547
   #     #   name: "data-queue"
   #     #   length: "2"
   #     #   region: "us-west-2"
