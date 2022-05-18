@@ -14,7 +14,7 @@ type: application
 
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
-version: 1.0.4-rc.15
+version: 1.0.4-rc.16
 
 # This is the version number of the application being deployed. This version number should be
 # incremented each time you make changes to the application.
@@ -30,7 +30,7 @@ dependencies:
     repository: "https://kedacore.github.io/charts"
     condition: keda.enabled
   - name: cava-media
-    version: "0.1.5-rc.3"
+    version: "0.1.5-rc.4"
     repository: "https://cormorack.github.io/cava-media"
     condition: cava-media.enabled
   - name: cava-metadata
