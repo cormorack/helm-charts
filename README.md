@@ -1,4 +1,4 @@
-[![GitHub workflow status - Interactive Oceans Portal](https://img.shields.io/github/workflow/status/cormorack/helm-charts/Test%20Portal%20Chart?logo=github&label=Interactive%20Oceans%20Services)](https://github.com/cormorack/helm-charts/actions)
+[![Portal Chart Deployment](https://github.com/cormorack/helm-charts/actions/workflows/deploy-chart.yaml/badge.svg)](https://github.com/cormorack/helm-charts/actions/workflows/deploy-chart.yaml)
 
 # Interactive Oceans Helm Charts
 
