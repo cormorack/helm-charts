@@ -27,25 +27,19 @@ This repository contains the Interactive Oceans Services helm chart.
     # Install helm
     curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 
-    # Install stern
-    wget -O stern https://github.com/wercker/stern/releases/download/$(curl -s https://api.github.com/repos/wercker/stern/releases/latest | grep tag_name | cut -d '"' -f 4)/stern_linux_amd64
-    chmod +x ./stern
-    sudo mv ./stern /usr/local/bin/
-    ```
-
 1. Spin up [k3s](https://k3s.io/) cluster via [k3d](https://k3d.io/). K3s is a lightweight kubernetes by [rancher](https://rancher.com/).
 
     ``` bash
     # Note: https://github.com/rancher/k3d/issues/104#issuecomment-542184960
     # -p options are optional ... it is used to port forward to the host machine
+    # Pinned to K3S v1.20 only for now and traefik is disabled
     
     k3d cluster create \
+        --image rancher/k3s:v1.20.15-k3s1 \
         -p "9000:9000@loadbalancer" \
         -p "443:443@loadbalancer" \
         -p "80:80@loadbalancer" \
-        --k3s-server-arg \
-        --no-deploy \
-        --k3s-server-arg traefik
+        --k3s-arg="--disable=traefik@server:0"
     ```
 
 2. Connect to cluster and check
@@ -55,25 +49,33 @@ This repository contains the Interactive Oceans Services helm chart.
     kubectl cluster-info
     ```
 
-3. Update `io2-portal` helm chart dependencies
+3. Create cava secrets
+
+    **Must be unlocked first**
+
+    ```bash
+    kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml
+    ```
+
+4. Update `io2-portal` helm chart dependencies
 
     ```bash
     helm dependencies update ./io2-portal
     ```
 
-4. Install/upgrade `io2-portal` chart.
+5. Install/upgrade `io2-portal` chart.
 
     ```bash
-    helm upgrade io2-portal ./io2-portal --install --cleanup-on-fail --create-namespace --namespace development --values .ci-helpers/deployments/secrets/dev-test.yaml
+    helm upgrade io2-portal ./io2-portal --install --cleanup-on-fail --values .ci-helpers/deployments/secrets/dev-test.yaml
     ```
 
-5. Delete chart only
+6. Delete chart only
 
     ```bash
-    helm delete --namespace development io2-portal
+    helm delete io2-portal
     ```
 
-6. Tear down k3s cluster
+7. Tear down k3s cluster
 
     ```bash
     k3d cluster delete
