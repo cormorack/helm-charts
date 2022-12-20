@@ -59,8 +59,8 @@ jobs:
           helm template ./io2-portal --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
       # Starts a k8s cluster with NetworkPolicy enforcement and installs kubectl
       #
-      # ref: https://github.com/manics/action-k3s-helm/
-      - uses: manics/action-k3s-helm@v1
+      # ref: https://github.com/jupyterhub/action-k3s-helm
+      - uses: jupyterhub/action-k3s-helm@v3
         with:
           k3s-channel: ${{ matrix.k3s-channel }}
           metrics-enabled: false
@@ -69,6 +69,10 @@ jobs:
       # - name: Validate charts' rendered templates are valid k8s resources
       #   run: |
       #     helm template ./io2-portal --validate --values .ci-helpers/deployments/secrets/dev-test.yaml 1>/dev/null
+      - name: Create secrets
+        run: |
+          kubectl apply -f .ci-helpers/deployments/secrets/cava-secrets.yaml && \
+          kubectl get secret cava-secrets
       - name: Install chart and await readiness
         run: |
           helm upgrade io2-portal ./io2-portal --install --cleanup-on-fail --create-namespace --values .ci-helpers/deployments/secrets/dev-test.yaml
